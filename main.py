@@ -67,17 +67,20 @@ def _quadratic_multiply(x, y):
 ## Feel free to add your own tests here.
 def test_multiply():
   assert quadratic_multiply(BinaryNumber(2), BinaryNumber(2)) == 2*2
-  a = BinaryNumber(10)
-  b = BinaryNumber(5)
+  a = BinaryNumber(1234)
+  b = BinaryNumber(567)
   c = quadratic_multiply(a, b)
   print(c) 
     
 def time_multiply(x, y, f):
     start = time.time()
     # multiply two numbers x, y using function f
+    f(x, y)
     return (time.time() - start)*1000
-
-
     
-    
+test_multiply()
+a = BinaryNumber(1234)
+b = BinaryNumber(567)
+timetaken = time_multiply(a, b, quadratic_multiply)
+print("Elapsed time: %.2f ms" % timetaken)
 
