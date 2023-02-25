@@ -1,6 +1,6 @@
 # CMPS 2200  Recitation 03
 
-**Name (Team Member 1):**_________________________  
+**Name (Team Member 1):** Miranda Diaz 
 **Name (Team Member 2):**_________________________
 
 This recitation includes part of assignment 02. 
