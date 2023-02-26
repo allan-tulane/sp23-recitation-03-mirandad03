@@ -42,27 +42,35 @@ def quadratic_multiply(x, y):
     return _quadratic_multiply(x, y).decimal_val
 
 def _quadratic_multiply(x, y):
-    xvec = x.binary_vec
-    yvec = y.binary_vec
-    
-    xvec, yvec = pad(xvec, yvec)
-    
+
+#Obtain xvec and yvec, the binary_vec values of x and y
+    xvector = x.binary_vec
+    yvector = y.binary_vec
+
+#Pad xvec and yvec so they are the same length by adding leading 0s if necessary
+    xvector, yvector = pad(xvector, yvector)
+
+#Base case: If both x and y are ≤ 1, then just return their product.
     if x.decimal_val <= 1 and y.decimal_val <= 1:
         return BinaryNumber(x.decimal_val * y.decimal_val)
-    
-    x_left, x_right = split_number(xvec) 
-    y_left, y_right = split_number(yvec)
 
-    p1 = _quadratic_multiply(x_left, y_left)
-    p2 = _quadratic_multiply(x_left, y_right)
-    p3 = _quadratic_multiply(x_right, y_left)
-    p4 = _quadratic_multiply(x_right, y_right)
-    
-    p1 = bit_shift(p1, 2*(len(xvec)//2))
-    p2 = bit_shift(p2, len(xvec)//2)
-    p3 = bit_shift(p3, len(xvec)//2)
-    
-    return (p1 + p2) + (p3 + p4)
+#Otherwise, split xvec and yvec into two halves each. Call them x_left x_right y_left y_right
+    x_left, x_right = split_number(xvector) 
+    y_left, y_right = split_number(yvector)
+  
+#Now you can apply the formula above directly. Anywhere there is a multiply, call _quadratic_multiply
+    s1 = _quadratic_multiply(x_left, y_left)
+    s2 = _quadratic_multiply(x_left, y_right)
+    s3 = _quadratic_multiply(x_right, y_left)
+    s4 = _quadratic_multiply(x_right, y_right)
+  
+#Use bit_shift to do the 2 n and 2 n/2 multiplications.    
+    s1 = bit_shift(s1, 2*(len(xvector)//2))
+    s2 = bit_shift(s2, len(xvector)//2)
+    s3 = bit_shift(s3, len(xvector)//2)
+
+  #Finally, you have to do three sums to get the final answer.    
+    return (s1 + s2) + (s3 + s4)
    
 ## Feel free to add your own tests here.
 def test_multiply():
@@ -77,10 +85,11 @@ def time_multiply(x, y, f):
     # multiply two numbers x, y using function f
     f(x, y)
     return (time.time() - start)*1000
-    
+
+#printing things out to get a better visual
 test_multiply()
 a = BinaryNumber(1234)
 b = BinaryNumber(567)
 timetaken = time_multiply(a, b, quadratic_multiply)
-print("Elapsed time: %.2f ms" % timetaken)
+print("Time: %.2f ms" % timetaken)
 
