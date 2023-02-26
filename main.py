@@ -62,16 +62,14 @@ def _quadratic_multiply(x, y):
     x_left, x_right = split_number(xvec) 
     y_left, y_right = split_number(yvec)
   
-#Now you can apply the formula above directly. Anywhere there is a multiply, call _quadratic_multiply
+#Now you can apply the formula above directly. Anywhere there is a multiply, call _quadratic_multiply. Use bit_shift to do the 2 n and 2 n/2 multiplications.
     form1 = _quadratic_multiply(x_left, y_left)
-    form2 = _quadratic_multiply(x_left, y_right)
-    form3 = _quadratic_multiply(x_right, y_left)
-    form4 = _quadratic_multiply(x_right, y_right)
-  
-#Use bit_shift to do the 2 n and 2 n/2 multiplications.    
     form1 = bit_shift(form1, 2*(len(xvec)//2))
+    form2 = _quadratic_multiply(x_left, y_right)
     form2 = bit_shift(form2, len(xvec)//2)
+    form3 = _quadratic_multiply(x_right, y_left)
     form3 = bit_shift(form3, len(xvec)//2)
+    form4 = _quadratic_multiply(x_right, y_right)    
 
   #Finally, you have to do three sums to get the final answer.    
     return (form1 + form2) + (form3 + form4)
