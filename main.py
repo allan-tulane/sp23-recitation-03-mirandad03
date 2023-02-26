@@ -44,33 +44,33 @@ def quadratic_multiply(x, y):
 def _quadratic_multiply(x, y):
 
 #Obtain xvec and yvec, the binary_vec values of x and y
-    xvector = x.binary_vec
-    yvector = y.binary_vec
+    xvec = x.binary_vec
+    yvec = y.binary_vec
 
 #Pad xvec and yvec so they are the same length by adding leading 0s if necessary
-    xvector, yvector = pad(xvector, yvector)
+    xvec, yvec = pad(xvec, yvec)
 
 #Base case: If both x and y are ≤ 1, then just return their product.
     if x.decimal_val <= 1 and y.decimal_val <= 1:
         return BinaryNumber(x.decimal_val * y.decimal_val)
 
 #Otherwise, split xvec and yvec into two halves each. Call them x_left x_right y_left y_right
-    x_left, x_right = split_number(xvector) 
-    y_left, y_right = split_number(yvector)
+    x_left, x_right = split_number(xvec) 
+    y_left, y_right = split_number(yvec)
   
 #Now you can apply the formula above directly. Anywhere there is a multiply, call _quadratic_multiply
-    s1 = _quadratic_multiply(x_left, y_left)
-    s2 = _quadratic_multiply(x_left, y_right)
-    s3 = _quadratic_multiply(x_right, y_left)
-    s4 = _quadratic_multiply(x_right, y_right)
+    form1 = _quadratic_multiply(x_left, y_left)
+    form2 = _quadratic_multiply(x_left, y_right)
+    form3 = _quadratic_multiply(x_right, y_left)
+    form4 = _quadratic_multiply(x_right, y_right)
   
 #Use bit_shift to do the 2 n and 2 n/2 multiplications.    
-    s1 = bit_shift(s1, 2*(len(xvector)//2))
-    s2 = bit_shift(s2, len(xvector)//2)
-    s3 = bit_shift(s3, len(xvector)//2)
+    form1 = bit_shift(form1, 2*(len(xvec)//2))
+    form2 = bit_shift(form2, len(xvec)//2)
+    form3 = bit_shift(form3, len(xvec)//2)
 
   #Finally, you have to do three sums to get the final answer.    
-    return (s1 + s2) + (s3 + s4)
+    return (form1 + form2) + (form3 + form4)
    
 ## Feel free to add your own tests here.
 def test_multiply():
